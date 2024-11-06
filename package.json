@@ -1,0 +1,22 @@
+{
+  "name": "eris-test",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./main.js",
+    "dev:nodemon": "nodemon ./main.js", 
+    "dev:pm2": "pm2 start main.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "eris": "^0.18.0",
+    "nodemon": "^3.1.7",
+    "pm2": "^5.4.2"
+  }
+}
