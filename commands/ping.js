@@ -5,6 +5,7 @@ module.exports  = {
    
     cooldown: 3000,
     execute: async (i) => {
+       
         i.createMessage('Pong!');
     }
 }

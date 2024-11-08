@@ -18,8 +18,7 @@ module.exports = {
     execute: async (i) => {
         try {
             
-            await i.acknowledge();
-
+           
             const wallet = await gerarCarteira();
             console.log("Carteira recebida:", wallet);
 

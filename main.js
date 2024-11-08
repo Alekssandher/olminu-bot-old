@@ -3,7 +3,11 @@ const { CommandInteraction} = require('eris')
 const fs = require('node:fs');
 const path = require('node:path');
 require('dotenv').config();
+
 const { TOKEN } = process.env;
+const COOLDOWN_TIME = 6 * 1000;
+
+const Cooldowns = new Map();
 
 const bot = new Eris(TOKEN, {
     intents: [
@@ -24,19 +28,6 @@ bot.on("error", (err) => {
   console.error(err); 
 });
 
-bot.on("messageCreate", (msg) => { 
-    console.log('text received')
-    
-    if(msg.content.toLowerCase() === "lili") { 
-        bot.createMessage(msg.channel.id, "Sou eu");
-    }
-    if (!msg.content.startsWith("!") || msg.content === "!") return
-
-    if(msg.content === "!ping") { 
-        bot.createMessage(msg.channel.id, "Pong!");
-        console.log('pong created')
-    } 
-});
 
 bot.connect(); 
 
@@ -45,6 +36,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 bot.commands = new Map();
 
 for (const file of commandFiles) {
+
     const command = require(`./commands/${file}`);
     
     if (command.name) {
@@ -54,7 +46,26 @@ for (const file of commandFiles) {
         console.error(`Erro: comando sem nome no arquivo ${file}`);
     }
 }
+
+
 bot.on("interactionCreate", async (i) => {
+   
+    await i.acknowledge();
+    console.log(i)
+    const userId = i.member.user.id; 
+
+    if (Cooldowns.has(userId)) {
+        const lastExecuted = Cooldowns.get(userId);
+        const timePassed = Date.now() - lastExecuted;
+
+        if (timePassed < COOLDOWN_TIME) {
+            const remainingTime = Math.ceil((COOLDOWN_TIME - timePassed) / 1000); 
+            return i.createMessage({
+                content: `Por favor, aguarde ${remainingTime} segundos antes de usar o comando novamente.`
+            });
+        }
+    }
+
     console.log(`Interação criada com o nome: ${i.data.name}`); 
     
     if (i instanceof CommandInteraction) {
@@ -62,11 +73,13 @@ bot.on("interactionCreate", async (i) => {
         console.log(`Comando encontrado:`, command); 
         
         if (!command) {
+            
             await i.createMessage("Este comando não existe.");
             return;
         }
 
         try {
+            Cooldowns.set(userId, Date.now());
             await command.execute(i); 
         } catch (error) {
             console.error(`Erro ao executar o comando ${i.data.name}:`, error);

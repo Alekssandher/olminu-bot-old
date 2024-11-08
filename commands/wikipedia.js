@@ -29,7 +29,7 @@ const search = async (target) => {
         ]);
 
         const text = response.extract;
-
+        
        
         const result = { title, text, url };
         cache.set(target, result);
@@ -52,16 +52,19 @@ module.exports = {
             required: true
         },
     ],
-    execute: async (interaction) => {
+    execute: async (i) => {
         try {
-            await interaction.acknowledge();
+            
+           
 
-            const searchTerm = interaction.data.options.find(opt => opt.name === 'termo').value;
+            
+
+            const searchTerm = i.data.options.find(opt => opt.name === 'termo').value;
             const page = await search(searchTerm);
 
             const { title, text, url } = page;
 
-            interaction.createMessage({
+            i.createMessage({
                 embeds: [{
                     title: title,
                     description: text,
@@ -70,7 +73,7 @@ module.exports = {
             });
         } catch (error) {
             console.error("Erro ao executar comando wiki:", error);
-            interaction.createMessage({
+            i.createMessage({
                 content: "Ocorreu um erro ao buscar informações na Wikipedia. Por favor, tente novamente mais tarde."
             });
         }
