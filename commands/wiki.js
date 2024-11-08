@@ -1,32 +1,49 @@
 const wiki = require('wikipedia');
 
 
-const search = async (params) => {
+const cache = new Map();
+
+const search = async (target) => {
     try {
-        await wiki.setLang('pt')
-		const page = await wiki.page(params);
-        
-        
-		
-		const title = await page.title
-        const response = await page.summary()
-        const text = await response.extract
-        
-        console.log("respnse: ", response)
+       
+        if (cache.has(target)) {
+            return cache.get(target);
+        }
 
-        const body = {title, text}
-        return body 
-	} catch (error) {
-		console.log(error);
-		//=> Typeof wikiError
-	}
-}
+        await wiki.setLang('pt');
+        const searchResults = await wiki.search(target, { suggestion: true, limit: 10 });
 
+        if (!searchResults.results || searchResults.results.length === 0) {
+            throw new Error("Nenhum resultado encontrado.");
+            
+        }
+
+        const firstResultTitle = searchResults.results[0].title;
+        const page = await wiki.page(firstResultTitle);
+
+      
+        const [title, response, url] = await Promise.all([
+            page.title,
+            page.summary(),
+            page.fullurl
+        ]);
+
+        const text = response.extract;
+
+       
+        const result = { title, text, url };
+        cache.set(target, result);
+
+        return result;
+    } catch (error) {
+        console.error("Erro na busca Wikipedia:", error);
+        throw error;
+    }
+};
 
 module.exports = {
-    
     name: "wiki",
-    description: "Make a research on the wikipedia",
+    description: "Make a research on Wikipedia",
     options: [
         {
             name: "termo",
@@ -35,25 +52,27 @@ module.exports = {
             required: true
         },
     ],
-    execute: async(i) => {
+    execute: async (interaction) => {
+        try {
+            await interaction.acknowledge();
 
-        
+            const searchTerm = interaction.data.options.find(opt => opt.name === 'termo').value;
+            const page = await search(searchTerm);
 
-        console.log("Termos: ", i.data.options)
-        const searchTerm = i.data.options.find(opt => opt.name === 'termo').value;
-        const page = await search(searchTerm)
+            const { title, text, url } = page;
 
-        const title = page.title
-        const text = page.text
-        console.log("Descrição: ", text)
-
-        i.createMessage({
-            
-            embeds: [{
-                title: `${title}`,
-                description: text
-
-            }]
-        });
+            interaction.createMessage({
+                embeds: [{
+                    title: title,
+                    description: text,
+                    url: url
+                }]
+            });
+        } catch (error) {
+            console.error("Erro ao executar comando wiki:", error);
+            interaction.createMessage({
+                content: "Ocorreu um erro ao buscar informações na Wikipedia. Por favor, tente novamente mais tarde."
+            });
+        }
     }
-}
+};
