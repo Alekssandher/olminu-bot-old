@@ -16,7 +16,10 @@ const bot = new Eris(TOKEN, {
         "guilds",
         "getAllUsers"
     ],
-    requestTimeout: 30000
+    rest: {
+        requestTimeout: 30000
+    }
+    
 });
 
 const prefix = "!"
