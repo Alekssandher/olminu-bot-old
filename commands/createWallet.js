@@ -20,7 +20,7 @@ module.exports = {
 
            
             const wallet = await gerarCarteira();
-            console.log("Carteira recebida:", wallet);
+            console.log("Carteira recebida:");
 
             if (wallet) {
                 console.log("Enviando carteira para o usuário...");
