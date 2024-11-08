@@ -17,7 +17,7 @@ module.exports = {
     description: "Generate a bitcoin wallet",
     execute: async (i) => {
         try {
-            
+
            
             const wallet = await gerarCarteira();
             console.log("Carteira recebida:", wallet);

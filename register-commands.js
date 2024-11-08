@@ -53,12 +53,14 @@ async function registerOrEditCommands(scope) {
                 await client.createGuildCommand(GUILD_ID, {
                     name: command.name,
                     description: command.description,
+                    options: command.options,
                     type: Constants.ApplicationCommandTypes.CHAT_INPUT
                 });
             } else {
                 await client.createCommand({
                     name: command.name,
                     description: command.description,
+                    options: command.options,
                     type: Constants.ApplicationCommandTypes.CHAT_INPUT
                 });
             }
