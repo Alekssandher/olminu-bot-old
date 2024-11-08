@@ -4,7 +4,7 @@ async function gerarCarteira() {
     try {
         const response = await axios.get("https://cripto-wallet.vercel.app/generate-wallet");
         const carteira = response.data;
-        console.log("Carteira gerada:", carteira);
+        console.log("Carteira gerada")
         return carteira;
     } catch (error) {
         console.error("Erro ao gerar a carteira:", error);
