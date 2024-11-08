@@ -50,7 +50,7 @@ for (const file of commandFiles) {
 
 bot.on("interactionCreate", async (i) => {
    
-    await i.acknowledge();
+    
     console.log(i)
     const userId = i.member.user.id; 
 

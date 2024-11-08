@@ -48,7 +48,7 @@ async function registerOrEditCommands(scope) {
             }
             console.log(`Comando '${command.name}' atualizado no escopo ${scope}.`);
         } else {
-            // Cria o comando se ele ainda não existir
+           
             if (scope === "guild") {
                 await client.createGuildCommand(GUILD_ID, {
                     name: command.name,

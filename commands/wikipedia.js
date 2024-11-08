@@ -43,7 +43,7 @@ const search = async (target) => {
 
 module.exports = {
     name: "wiki",
-    description: "Make a research on Wikipedia",
+    description: "Get information from Wikipedia",
     options: [
         {
             name: "termo",
@@ -53,12 +53,8 @@ module.exports = {
         },
     ],
     execute: async (i) => {
-        try {
-            
-           
-
-            
-
+        try {            
+            await i.acknowledge();
             const searchTerm = i.data.options.find(opt => opt.name === 'termo').value;
             const page = await search(searchTerm);
 
