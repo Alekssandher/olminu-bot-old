@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 const { TOKEN, GUILD_ID } = process.env;
-
+const wiki = require('./commands/wiki')
 
 const Constants = Eris.Constants;
 const client = new Eris(TOKEN, {
@@ -18,9 +18,12 @@ client.on('ready', async () => {
   console.log('Loading commands...');
   client.commands = new Collection();
 
-  const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+  const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 
   console.log(commandFiles)
+
+  // client.createGuildCommand(GUILD_ID, wiki)
+
   for (const file of commandFiles) {
 
       const command = (await require(`./commands/${file}`));
@@ -29,12 +32,15 @@ client.on('ready', async () => {
           console.error(`Comando sem nome encontrado: ${file}`);
           continue;
       }
+      
+      // client.createGuildCommand(GUILD_ID, command);
+      
       client.createCommand( {
-          name: command.name,
-          description: command.description,
-          type: Constants.ApplicationCommandTypes.CHAT_INPUT,
-         
-      });
+        name: command.name,
+        description: command.description,
+        type: Constants.ApplicationCommandTypes.CHAT_INPUT,
+       
+    });
       
   }
   console.log('Commands loaded!');
