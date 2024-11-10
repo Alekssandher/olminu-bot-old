@@ -24,7 +24,8 @@ const bot = new Eris(TOKEN, {
 
 const prefix = "!"
 bot.on("ready", () => { 
-    console.log("Ready!"); 
+    console.log("Ready!");
+    
 });
 
 bot.on("error", (err) => {
@@ -37,6 +38,7 @@ bot.connect();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 bot.commands = new Map();
+
 
 for (const file of commandFiles) {
 
@@ -51,10 +53,12 @@ for (const file of commandFiles) {
 }
 
 
+
 bot.on("interactionCreate", async (i) => {
    
     
     console.log(i)
+    global.lang = ""
     const userId = i.member.user.id; 
 
     if (Cooldowns.has(userId)) {
@@ -70,14 +74,14 @@ bot.on("interactionCreate", async (i) => {
     }
 
     console.log(`Interação criada com o nome: ${i.data.name}`); 
-    
+    const timePassed = new Date()
     if (i instanceof CommandInteraction) {
         const command = bot.commands.get(i.data.name); 
         console.log(`Comando encontrado:`, command); 
         
         if (!command) {
             
-            await i.createMessage("Este comando não existe.");
+            i.createMessage("Este comando não existe.");
             return;
         }
 
@@ -86,7 +90,8 @@ bot.on("interactionCreate", async (i) => {
             await command.execute(i); 
         } catch (error) {
             console.error(`Erro ao executar o comando ${i.data.name}:`, error);
-            await i.createMessage("Ocorreu um erro ao executar este comando!");
+            i.createMessage("Ocorreu um erro ao executar este comando!");
         }
     }
+    console.log(`Levou: ${new Date() - timePassed}ms`)
 });
