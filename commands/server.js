@@ -11,18 +11,18 @@ module.exports = {
        
         i.createMessage({
             embeds: [{
-                title: "Server Information", // Title of the embed
+                title: "Server Information", 
                 description: "Here is some more info, with **awesome** formatting.\nPretty *neat*, huh?",
-                author: { // Author property
+                author: { 
                   name: member.username,
                   icon_url: i.member.avatarURL,
                 },
-                color: 0x008000, // Color, either in hex (show), or a base-10 integer
-                fields: [ // Array of field objects
+                color: 0x008000, 
+                fields: [ 
                   {
-                    name: "Server name", // Field title
-                    value: `${guild.name}`, // Field
-                    inline: true, // Whether you want multiple fields in same line
+                    name: "Server name", 
+                    value: `${guild.name}`, 
+                    inline: true,
                   },
                   {
                     name: "This server was created at",
@@ -30,7 +30,7 @@ module.exports = {
                     inline: true,
                   },
                 ],
-                footer: { // Footer text
+                footer: { 
                   text: "Created with Eris.",
                 },
               }],

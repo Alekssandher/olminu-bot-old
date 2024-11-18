@@ -13,7 +13,7 @@ const client = new Eris(TOKEN, {
 async function registerOrEditCommands(scope) {
     console.log(`Carregando comandos para o escopo: ${scope}`);
     const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-
+    
     const registeredCommands = scope === "guild"
         ? await client.getGuildCommands(GUILD_ID)
         : await client.getCommands();

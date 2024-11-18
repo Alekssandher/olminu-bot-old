@@ -1,10 +1,10 @@
+import { CommandInteraction } from "eris";
 
 module.exports  = {
     name: 'ping',
     description: 'replies with ping!',
-   
-    cooldown: 3000,
-    execute: async (i) => {
+
+    execute: async (i: CommandInteraction) => {
        
         i.createMessage('Pong!');
     }

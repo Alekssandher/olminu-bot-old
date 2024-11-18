@@ -1,47 +1,57 @@
-const Eris = require("eris");
-const { CommandInteraction} = require('eris')
-const fs = require('node:fs');
-const path = require('node:path');
-require('dotenv').config();
+import Eris from 'eris';
+import { CommandInteraction } from 'eris';
+import fs from 'node:fs'
+import dotenv from 'dotenv'
+dotenv.config()
+
+if (!process.env.TOKEN) {
+    throw new Error("A variável de ambiente TOKEN não está definida.");
+}
 
 const { TOKEN } = process.env;
-const COOLDOWN_TIME = 6 * 1000;
 
-const Cooldowns = new Map();
+const COOLDOWN_TIME: number = 6 * 1000;
 
-const bot = new Eris(TOKEN, {
+
+const Cooldowns: Map<string, number> = new Map();
+
+
+const bot: any = new Eris.Client(TOKEN, {
     intents: [
-        "guildMessages",
-        "messageContent",
-        "guilds",
-        "getAllUsers"
+        Eris.Constants.Intents.guildMessages,
+        Eris.Constants.Intents.messageContent,
+        Eris.Constants.Intents.guilds,
+        Eris.Constants.Intents.guildMembers
     ],
     rest: {
         requestTimeout: 30000
     }
-    
 });
 
-const prefix = "!"
 bot.on("ready", () => { 
     console.log("Ready!");
     
 });
 
-bot.on("error", (err) => {
-  console.error(err); 
+bot.on("error", (err: Error) => {
+
+    console.error("typeof err",typeof(err)); 
+
 });
+
 
 
 bot.connect(); 
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+const commandFiles: string[] = fs.readdirSync('./commands').filter((file: string) => file.endsWith('.js') || file.endsWith('.ts'));
+
+console.log("Command files: ", typeof(commandFiles));
 bot.commands = new Map();
 
 
 for (const file of commandFiles) {
-
+  
     const command = require(`./commands/${file}`);
     
     if (command.name) {
@@ -53,18 +63,25 @@ for (const file of commandFiles) {
 }
 
 
-
-bot.on("interactionCreate", async (i) => {
+//The type of i is an object, but for some reason ts doesn't think so
+bot.on("interactionCreate", async (i: CommandInteraction) => {
    
+    //Then I had to add an unuseful verification
+    if (i.member == undefined){return console.log('i is undefined')}
+
+    console.log("Tipo do i", typeof(i))
     
-    console.log(i)
-    global.lang = ""
-    const userId = i.member.user.id; 
+    
+    const userId: string = i.member.user.id ; 
+    console.log('type of userid: ', typeof(userId))
 
     if (Cooldowns.has(userId)) {
-        const lastExecuted = Cooldowns.get(userId);
-        const timePassed = Date.now() - lastExecuted;
-
+        
+        
+        const lastExecuted: number = Cooldowns.get(userId) ?? 0;
+        
+        const timePassed: number = Date.now() - lastExecuted;
+        
         if (timePassed < COOLDOWN_TIME) {
             const remainingTime = Math.ceil((COOLDOWN_TIME - timePassed) / 1000); 
             return i.createMessage({
@@ -72,9 +89,11 @@ bot.on("interactionCreate", async (i) => {
             });
         }
     }
-
+    
+    console.time
+    
     console.log(`Interação criada com o nome: ${i.data.name}`); 
-    const timePassed = new Date()
+    
     if (i instanceof CommandInteraction) {
         const command = bot.commands.get(i.data.name); 
         console.log(`Comando encontrado:`, command); 
@@ -93,5 +112,5 @@ bot.on("interactionCreate", async (i) => {
             i.createMessage("Ocorreu um erro ao executar este comando!");
         }
     }
-    console.log(`Levou: ${new Date() - timePassed}ms`)
+    console.timeEnd('Tempo')
 });

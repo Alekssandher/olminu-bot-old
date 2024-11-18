@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./main.js",
-    "dev:nodemon": "nodemon ./main.js",
+    "dev:nodemon": "nodemon --exec ts-node main.ts",
     "dev:pm2": "pm2 start main.js --watch"
   },
   "keywords": [],
@@ -18,6 +18,11 @@
     "eris": "^0.18.0",
     "nodemon": "^3.1.7",
     "pm2": "^5.4.2",
+    "ts-node": "^10.9.2",
     "wikipedia": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
   }
 }
