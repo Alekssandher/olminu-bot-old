@@ -1,5 +1,17 @@
-# Olminu Bot
+<div align="center">
+
+# Olminu Bot  
 **Olminu Bot** is a Discord bot developed using Eris.js.
+
+
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Alekssandher/Olminu-Bot?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/Alekssandher/Olminu-Bot?style=flat-square)
+![Contributors](https://img.shields.io/github/contributors/Alekssandher/Olminu-Bot?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/Alekssandher/Olminu-Bot?style=flat-square)
+
+</div>
+
+---
 
 ### Why Olminu?
 The bot is named after Olminu, a character from the manga *Drifters*. As a fan of the character, I chose to name the bot in her honor.
