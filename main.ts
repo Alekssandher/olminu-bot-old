@@ -52,7 +52,8 @@ bot.commands = new Map();
 
 for (const file of commandFiles) {
   
-    const command = require(`./commands/${file}`);
+    try {
+        const command = require(`./commands/${file}`);
     
     if (command.name) {
         bot.commands.set(command.name, command); 
@@ -60,9 +61,11 @@ for (const file of commandFiles) {
     } else {
         console.error(`Erro: comando sem nome no arquivo ${file}`);
     }
+
+    } catch (error) {
+        console.log(`Erro ao carregar comandos: ${error}`)
+    }
 }
-
-
 //The type of i is an object, but for some reason ts doesn't think so
 bot.on("interactionCreate", async (i: CommandInteraction) => {
    
@@ -88,6 +91,10 @@ bot.on("interactionCreate", async (i: CommandInteraction) => {
                 content: `Por favor, aguarde ${remainingTime} segundos antes de usar o comando novamente.`
             });
         }
+
+        if (timePassed >= COOLDOWN_TIME) {
+            Cooldowns.delete(userId);  
+        }
     }
     
     console.time
@@ -112,5 +119,5 @@ bot.on("interactionCreate", async (i: CommandInteraction) => {
             i.createMessage("Ocorreu um erro ao executar este comando!");
         }
     }
-    console.timeEnd('Tempo')
+    console.timeEnd
 });

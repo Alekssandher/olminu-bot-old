@@ -1,17 +1,27 @@
 {
-  "name": "eris-test",
-  "version": "1.0.0",
+  "name": "olminu-bot",
+  "version": "0.1.0-alpha",
   "main": "main.js",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./main.js",
+    "start": "ts-node ./main.ts",
+    "build": "tsc",
     "dev:nodemon": "nodemon --exec ts-node main.ts",
     "dev:pm2": "pm2 start main.js --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["discord", "bot", "eris", "typescript"],
+  "author": "Alekssandher Exaltação",
+  "license": "GPL-3.0-only",
+  "description": "A Discord bot developed using Eris.js.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alekssandher/Olminu-Bot"
+  },
+  "bugs": {
+    "url": "https://github.com/Alekssandher/Olminu-Bot/issues",
+    "email": "alekssandher1@hotmail.com"
+  },
   "dependencies": {
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
@@ -24,5 +34,8 @@
   "devDependencies": {
     "@types/node": "^22.9.0",
     "typescript": "^5.6.3"
-  }
+  },
+  "engines": {
+  "node": ">=20.18.0"
+}
 }
