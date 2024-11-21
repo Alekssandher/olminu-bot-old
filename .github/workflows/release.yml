@@ -1,0 +1,44 @@
+name: Release Bot
+
+on:
+  push:
+    tags:
+      - 'v*' # Aciona o workflow ao fazer push de tags como v0.1.0, v1.0.0, etc.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Clonar o repositório
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Configurar Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '23.1.0' # Versão do Node.js que o seu projeto requer
+
+    # Instalar dependências
+    - name: Install dependencies
+      run: npm install
+
+    # Gerar o pacote ZIP
+    - name: Create zip file
+      run: zip -r olminu-bot-${{ github.ref_name }}.zip . -x '*.git*' # Cria um arquivo ZIP do projeto
+
+    # Criar a release
+    - name: Create GitHub Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: olminu-bot-${{ github.ref_name }}.zip
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        body: |
+          ### Olminu Bot
+          This release contains:
+          - All source code.
+          - Dependencies specified in `package.json`.
+          - A ready-to-use ZIP file for deployment.
