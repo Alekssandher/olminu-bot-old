@@ -1,9 +1,16 @@
-const axios = require('axios');
 
-async function gerarCarteira() {
+import { CommandInteraction } from 'eris';
+const wallet = require('../scripts/createWallet')
+
+interface Wallet {
+    address: string;
+    privateKey: string;
+    seed: string;
+}
+
+async function gerarCarteira(): Promise<Wallet | null> {
     try {
-        const response = await axios.get("https://cripto-wallet.vercel.app/generate-wallet");
-        const carteira = response.data;
+        const carteira: Wallet = wallet
         console.log("Carteira gerada")
         return carteira;
     } catch (error) {
@@ -11,15 +18,18 @@ async function gerarCarteira() {
         return null;
     }
 }
-
 module.exports = {
     name: "create-wallet",
     description: "Generate a bitcoin wallet",
-    execute: async (i) => {
+    execute: async (i: CommandInteraction) => {
         try {
+            
+            console.time("WALLET TIMER")
+            const wallet: Wallet | null = await gerarCarteira();
+            console.timeEnd("WALLET TIMER")
 
-           
-            const wallet = await gerarCarteira();
+            if (!wallet) return i.createMessage("Erro ao gerar carteira, tente novamente.")
+
             console.log("Carteira recebida");
 
             if (wallet) {

@@ -1,23 +1,33 @@
-const Eris = require("eris");
-const fs = require("fs");
-require("dotenv").config();
 
-const { TOKEN, GUILD_ID } = process.env;
+import Eris from 'eris';
+import fs from 'node:fs'
+import dotenv from 'dotenv'
+dotenv.config()
+
+if (!process.env.TOKEN) {
+    throw new Error("A variável de ambiente TOKEN não está definida.");
+}
+
+const { TOKEN } = process.env;
+const GUILD_ID: string = process.env.GUILD_ID!;
 const Constants = Eris.Constants;
-const client = new Eris(TOKEN, {
+
+const client: Eris.Client = new Eris.Client(TOKEN, {
   intents: [
    
   ]
 });
 
-async function registerOrEditCommands(scope) {
+async function registerOrEditCommands(scope: string) {
     console.log(`Carregando comandos para o escopo: ${scope}`);
-    const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.ts'));
+    
     
     const registeredCommands = scope === "guild"
         ? await client.getGuildCommands(GUILD_ID)
         : await client.getCommands();
-
+    
+    
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);
 
@@ -29,21 +39,22 @@ async function registerOrEditCommands(scope) {
        
         const existingCommand = registeredCommands.find(c => c.name === command.name);
 
+        
+
         if (existingCommand) {
            
             if (scope === "guild") {
                 await client.editGuildCommand(GUILD_ID, existingCommand.id, {
                     name: command.name,
                     description: command.description,
-                    options: command.options,
-                    type: Constants.ApplicationCommandTypes.CHAT_INPUT
+                    options: command.options                    
                 });
             } else {
                 await client.editCommand(existingCommand.id, {
                     name: command.name,
                     description: command.description,
-                    options: command.options,
-                    type: Constants.ApplicationCommandTypes.CHAT_INPUT
+                    options: command.options
+                    
                 });
             }
             console.log(`Comando '${command.name}' atualizado no escopo ${scope}.`);
@@ -83,7 +94,7 @@ async function main() {
     client.on("ready", async () => {
         console.log(`Bot conectado como ${client.user.username}`);
         await registerOrEditCommands(scope);
-        client.disconnect();
+        client.disconnect({reconnect: false});
     });
 }
 

@@ -1,9 +1,10 @@
-const wiki = require('wikipedia');
+import { AutocompleteInteraction, CommandClientOptions, CommandInteraction, CommandInteractionData, CommandOptions, Interaction, InteractionDataOptions, InteractionDataOptionsString, InteractionOptions } from "eris";
+import wiki from "wikipedia";
 
 
 const cache = new Map();
 
-const search = async (target, opLang) => {
+const search = async (target: string, opLang: string) => {
     try {
        
         let lang = ""
@@ -16,9 +17,9 @@ const search = async (target, opLang) => {
         }
         
         await wiki.setLang(lang);
-        const timePassed = new Date()
+        console.time("WIKI TIME")
         const searchResults = await wiki.search(target, { suggestion: true, limit: 10 });
-        console.log(`A pesquisa levou: ${new Date() - timePassed}ms`)
+        console.timeEnd("WIKI TIME")
 
 
         if (!searchResults.results || searchResults.results.length === 0) {
@@ -66,18 +67,25 @@ module.exports = {
             required: false
         }
     ],
-    execute: async (i) => {
+    execute: async (i: CommandInteraction) => {
         try {            
             await i.acknowledge();
-            const searchTerm = i.data.options.find(opt => opt.name === 'termo').value;
-            const langOp = i.data.options.find(opt => opt.name === 'language')
+            if (!i.data.options) return
+
             
-            let lang
-           
-            if (!langOp){lang = "pt";} else {lang = i.data.options.find(opt => opt.name === 'language').value}
+            const searchTerm = i.data.options.find(opt => opt.name === 'termo') as InteractionDataOptionsString | undefined;
+            if (!searchTerm) return
+
+            console.log(searchTerm, typeof(searchTerm))
+            const langOp = i.data.options.find(opt => opt.name === 'language') as InteractionDataOptionsString | undefined
+            
+            let lang: string
+            
+
+            if (!langOp){lang = "pt";} else {lang = langOp.value}
 
             console.log("Lingua: ",lang);
-            const page = await search(searchTerm, lang);
+            const page = await search(searchTerm.value, lang);
 
             if (!page){
                 i.createMessage({

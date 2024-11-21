@@ -2,7 +2,6 @@
   "name": "olminu-bot",
   "version": "0.1.0-alpha",
   "main": "main.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./main.ts",
@@ -10,7 +9,12 @@
     "dev:nodemon": "nodemon --exec ts-node main.ts",
     "dev:pm2": "pm2 start main.js --watch"
   },
-  "keywords": ["discord", "bot", "eris", "typescript"],
+  "keywords": [
+    "discord",
+    "bot",
+    "eris",
+    "typescript"
+  ],
   "author": "Alekssandher Exaltação",
   "license": "GPL-3.0-only",
   "description": "A Discord bot developed using Eris.js.",
@@ -24,10 +28,14 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "bip32": "^5.0.0-rc.0",
+    "bip39": "^3.1.0",
+    "bitcoinjs-lib": "^7.0.0-rc.0",
     "dotenv": "^16.4.5",
     "eris": "^0.18.0",
     "nodemon": "^3.1.7",
     "pm2": "^5.4.2",
+    "tiny-secp256k1": "^2.2.3",
     "ts-node": "^10.9.2",
     "wikipedia": "^2.1.2"
   },
@@ -36,6 +44,6 @@
     "typescript": "^5.6.3"
   },
   "engines": {
-  "node": ">=23.1.0"
-}
+    "node": ">=23.1.0"
+  }
 }
