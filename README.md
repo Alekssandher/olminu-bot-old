@@ -56,18 +56,15 @@ Invite the bot to your server using this [link](https://discord.com/oauth2/autho
     - Check the `.env.example` file for the required variables.
 3. Replace the placeholder values with your bot's credentials.
 
-> **Pro Tip**: For testing, create a dedicated Discord server. Use the `GUILD_ID` environment variable to restrict commands to that server.
+> **Tip**: For testing, create a dedicated Discord server. Use the `GUILD_ID` environment variable to restrict commands to that server.
 
 ## Running the Project
 
 Run the main file using one of the commands below.  
-> **Recommendation**: Use `pm2 start main.ts --watch` for an improved development workflow and automatic restarts. This is especially helpful because the bot may occasionally crash when a slash command is used. Running it with PM2 ensures it automatically restarts whenever a crash occurs.
 
 ```bash
 npm run dev:nodemon   # Runs the project with nodemon
 ts-node main.ts       # Executes the TypeScript file directly
-pm2 start main.ts     # Runs the project with PM2
-pm2 start main.ts --watch  # Watches for file changes and restarts automatically
 ``` 
 
 ## Registering Slash Commands
