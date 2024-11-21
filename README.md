@@ -68,16 +68,16 @@ ts-node main.ts       # Executes the TypeScript file directly
 ``` 
 
 ## Registering Slash Commands
-Registering commands is simple. Use the `register-commands.js` script provided in the repository.
+Registering commands is simple. Use the `register-commands.ts` script provided in the repository.
 Commands can be registered globally or restricted to a specific guild.
 
 ```
 // To register guild commands
-node register-commands.js guild
+ts-node register-commands.ts guild
 ```
 ```
 // To register global commands
-node register-commands.js global
+ts-node register-commands.ts global
 ```
 > Note: Global command registration might take up to an hour to propagate across all servers. Guild commands are updated instantly.
 ## Contribution
