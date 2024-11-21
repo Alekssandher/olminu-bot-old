@@ -1,0 +1,24 @@
+name: Add Alpha Tag
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  tag_alpha:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Create and push alpha tag
+        run: |
+          git tag -f alpha
+          git push origin alpha --force
