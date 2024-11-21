@@ -21,7 +21,6 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 ## Table of Contents
 - [Inviting Bot](#inviting-bot)
 - [Prerequisites](#prerequisites)
-- [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Setting Up](#setting-up)
 - [Running the Project](#running-the-project)
@@ -34,17 +33,6 @@ Invite the bot to your server using this [link](https://discord.com/oauth2/autho
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/) (version 20.18 or higher)
-
-## Dependencies
-
-The following libraries are used in the project:
-
-- **[nodemon](https://www.npmjs.com/package/nodemon)** - Automatically restarts the server during development.
-- **[prompt-sync](https://www.npmjs.com/package/prompt-sync)** - For synchronous user input reading.
-- **[axios](https://axios-http.com/)** - Makes HTTP requests to external APIs.
-- **[dotenv](https://www.npmjs.com/package/dotenv)** - Manages environment variables.
-- **[eris](https://abal.moe/Eris/)** - Interacts with the Discord API.
-- **[wikipedia](https://www.npmjs.com/package/wikipedia)** - Queries Wikipedia content.
 
 ## Installation
 
