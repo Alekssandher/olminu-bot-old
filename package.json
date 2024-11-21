@@ -1,13 +1,13 @@
 {
   "name": "olminu-bot",
   "version": "0.1.1-alpha",
-  "main": "main.js",
+  "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./main.ts",
     "build": "tsc",
     "dev:nodemon": "nodemon --exec ts-node main.ts",
-    "dev:pm2": "pm2 start main.js --watch"
+    "dev:pm2": "pm2 start main.ts --watch"
   },
   "keywords": [
     "discord",
@@ -44,6 +44,6 @@
     "typescript": "^5.6.3"
   },
   "engines": {
-    "node": ">=23.1.0"
+    "node": ">=20.17.0"
   }
 }
