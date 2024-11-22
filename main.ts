@@ -19,12 +19,10 @@ const Cooldowns: Map<string, number> = new Map();
 const bot: any = new Eris.Client(TOKEN, {
     intents: [
         Eris.Constants.Intents.guildMessages,
-        Eris.Constants.Intents.messageContent,
         Eris.Constants.Intents.guilds,
-        Eris.Constants.Intents.guildMembers
     ],
     rest: {
-        requestTimeout: 30000
+        requestTimeout: 60000
     }
 });
 
@@ -35,18 +33,18 @@ bot.on("ready", () => {
 
 bot.on("error", (err: Error) => {
 
-    console.error("typeof err",typeof(err)); 
+    console.error("Client error (bot.on)", err); 
 
 });
 
-
-
 bot.connect(); 
 
+bot.options.disableEvents = {
+    TYPING_START: true,  
+  };
 
 const commandFiles: string[] = fs.readdirSync('./commands').filter((file: string) => file.endsWith('.js') || file.endsWith('.ts'));
 
-console.log("Command files: ", typeof(commandFiles));
 bot.commands = new Map();
 
 
@@ -66,14 +64,11 @@ for (const file of commandFiles) {
         console.log(`Erro ao carregar comandos: ${error}`)
     }
 }
-//The type of i is an object, but for some reason ts doesn't think so
-bot.on("interactionCreate", async (i: CommandInteraction) => {
-   
-    //Then I had to add an unuseful verification
-    if (i.member == undefined){return console.log('i is undefined')}
 
-    console.log("Tipo do i", typeof(i))
+bot.on("interactionCreate", (i: CommandInteraction) => {
+   
     
+    if (i.member == undefined){return console.log('i is undefined')}
     
     const userId: string = i.member.user.id ; 
     console.log('type of userid: ', typeof(userId))
@@ -94,16 +89,16 @@ bot.on("interactionCreate", async (i: CommandInteraction) => {
 
         if (timePassed >= COOLDOWN_TIME) {
             Cooldowns.delete(userId);  
-        }
+        } 
     }
     
-    console.time
+    console.time("COMMAND TIME")
     
     console.log(`Interação criada com o nome: ${i.data.name}`); 
     
     if (i instanceof CommandInteraction) {
         const command = bot.commands.get(i.data.name); 
-        console.log(`Comando encontrado:`, command); 
+        console.log(`Comando encontrado:`, command.name); 
         
         if (!command) {
             
@@ -113,11 +108,11 @@ bot.on("interactionCreate", async (i: CommandInteraction) => {
 
         try {
             Cooldowns.set(userId, Date.now());
-            await command.execute(i); 
+            command.execute(i); 
         } catch (error) {
             console.error(`Erro ao executar o comando ${i.data.name}:`, error);
             i.createMessage("Ocorreu um erro ao executar este comando!");
         }
     }
-    console.timeEnd
+    console.timeEnd("COMMAND TIME")
 });

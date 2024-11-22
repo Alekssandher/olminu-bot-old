@@ -1,6 +1,6 @@
 
 import { CommandInteraction } from 'eris';
-const wallet = require('../scripts/createWallet')
+const gerarCarteira = require('../scripts/createWallet')
 
 interface Wallet {
     address: string;
@@ -8,24 +8,14 @@ interface Wallet {
     seed: string;
 }
 
-async function gerarCarteira(): Promise<Wallet | null> {
-    try {
-        const carteira: Wallet = wallet
-        console.log("Carteira gerada")
-        return carteira;
-    } catch (error) {
-        console.error("Erro ao gerar a carteira:", error);
-        return null;
-    }
-}
 module.exports = {
     name: "create-wallet",
     description: "Generate a bitcoin wallet",
-    execute: async (i: CommandInteraction) => {
+    execute: (i: CommandInteraction) => {
         try {
             
             console.time("WALLET TIMER")
-            const wallet: Wallet | null = await gerarCarteira();
+            const wallet: Wallet | null = gerarCarteira();
             console.timeEnd("WALLET TIMER")
 
             if (!wallet) return i.createMessage("Erro ao gerar carteira, tente novamente.")

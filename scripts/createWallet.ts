@@ -11,22 +11,26 @@ const network = bitcoin.networks.bitcoin
 
 const path = `m/49'/1'/0'/0`
 
-let mnemonic = bip39.generateMnemonic()
-const seed = bip39.mnemonicToSeedSync(mnemonic)
+function gerarCarteira() {
+    let mnemonic = bip39.generateMnemonic()
+    const seed = bip39.mnemonicToSeedSync(mnemonic)
 
-let root = bip32.fromSeed(seed, network)
+    let root = bip32.fromSeed(seed, network)
 
-let account = root.derivePath(path)
-let node = account.derive(0).derive(0)
+    let account = root.derivePath(path)
+    let node = account.derive(0).derive(0)
 
-let btcAddress = bitcoin.payments.p2pkh({
-    pubkey: node.publicKey,
-    network: network,
-}).address
+    let btcAddress = bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network: network,
+    }).address
 
-const wallet = {
-    address: btcAddress,
-    privateKey: node.toWIF(),
-    seed: mnemonic
-};
-module.exports = wallet
+    const wallet = {
+        address: btcAddress,
+        privateKey: node.toWIF(),
+        seed: mnemonic
+    };
+    return wallet
+}
+
+module.exports = gerarCarteira

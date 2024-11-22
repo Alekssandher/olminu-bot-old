@@ -3,7 +3,7 @@ import { CommandInteraction, Guild, User } from "eris";
 module.exports = {
     name: 'server-information',
     description: 'show server information!',
-    execute: async (i: CommandInteraction) => {
+    execute: (i: CommandInteraction) => {
 
 
       if (!i.channel || !("guild" in i.channel)) {

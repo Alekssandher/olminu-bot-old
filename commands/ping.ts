@@ -4,7 +4,7 @@ module.exports  = {
     name: 'ping',
     description: 'replies with ping',
 
-    execute: async (i: CommandInteraction) => {
+    execute: (i: CommandInteraction) => {
         
         i.createMessage('Pong!');
     }
