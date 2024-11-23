@@ -194,7 +194,9 @@ module.exports = {
                                 },
                                 {
                                     name: "About",
-                                    value: char.about.substring(0, 1020)+ "..." || 'This character has no about',                           
+                                    value: char.about
+                                    ? char.about.substring(0, 1020)+ "..."
+                                    : 'This character has no about',                           
                                 
                                 }
                             ],
@@ -209,6 +211,10 @@ module.exports = {
                 if (termsTreated === 'olminu') await i.createMessage('Is that me?')
                 break;
             default:
+                i.createMessage({
+                    content: "***Your ip was saved on our database, we know that you are trying to do something wrong, what a bad guy you are.***",
+                    flags: 64
+                });
                 break;
         }
 
