@@ -1,8 +1,5 @@
-import { AutocompleteInteraction, CommandClientOptions, CommandInteraction, CommandInteractionData, CommandOptions, Interaction, InteractionDataOptions, InteractionDataOptionsString, InteractionOptions } from "eris";
+import { CommandInteraction, InteractionDataOptionsString } from "eris";
 import wiki from "wikipedia";
-
-
-const cache = new Map();
 
 const search = async (target: string, opLang: string) => {
     try {
