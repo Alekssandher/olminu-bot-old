@@ -72,7 +72,10 @@ module.exports = {
 
         
         if (!kind || !terms) {
-            i.createMessage("It looks like there's something up with your command.")
+            i.createMessage({
+                content: "It looks like there's something up with your command.",
+                flags: 64
+            })
             return console.log('kind or terms empty')
             
         }
@@ -80,7 +83,8 @@ module.exports = {
         const termsTreated: string = terms.value.toLowerCase();
 
         const member =  i.member as Member | null
-        if (!member) return
+
+        if (!member) return i.createMessage('A big error has ocurred oh helll!!')
 
         const username = member.user.globalName as string
 
@@ -166,7 +170,11 @@ module.exports = {
             
             case 'character':
                 const char = await characterSearch(termsTreated)
-                if (!char.name) return i.createMessage('Not found, did you type it right?')
+                console.log(char)
+                if (!char || !char.name) return i.createMessage({
+                    content: 'Not found, did you type it right?',
+                    flags: 64
+                })
                 
                 await i.createMessage({
                     embeds: [
