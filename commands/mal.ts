@@ -92,7 +92,7 @@ module.exports = {
             case 'anime':
                 const researchResult = await animeSearch(termsTreated)
 
-                if (!researchResult.title) return i.createMessage('Not found, did you type it right?')
+                if (!research result || !researchResult.title) return i.createMessage('Not found, did you type it right?')
 
                 
 
