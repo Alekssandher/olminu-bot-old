@@ -1,4 +1,4 @@
-<div align="center">
+![image](https://github.com/user-attachments/assets/78f260a0-e408-41ac-a242-1b977e8cc7c7)<div align="center">
     
 # Olminu Bot  
 <img src="https://i.imgur.com/xKP55zy.gif" >
@@ -26,6 +26,7 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 - [Running the Project](#running-the-project)
 - [Registering Slash Commands](#registering-slash-commands)
 - [Contribution](#contribution)
+- [Terms of Use](#terms)
 - [License](#license)
 
 ## Inviting Bot
@@ -83,6 +84,8 @@ ts-node register-commands.ts global
 ## Contribution
 If you want to contribute to the project, feel free to open an issue or submit a pull request. All contributions are welcome!
 
+## Terms
+Make sure to be a good fuy and follow or [terms of use](TERMS.md)
 ## License
 This project is licensed under the GNU General Public License (GPL) version 3. You are free to use, modify, and distribute this software, provided that all copies and derivatives are also licensed under GPL v3.
 
