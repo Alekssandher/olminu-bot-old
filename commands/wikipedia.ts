@@ -27,18 +27,18 @@ const search = async (target: string, opLang: string) => {
         const firstResultTitle = searchResults.results[0].title;
         const page = await wiki.page(firstResultTitle);
 
-      
+        
         const [title, response, url] = await Promise.all([
             page.title,
             page.summary(),
             page.fullurl
+            
         ]);
         const text = response.extract;
-        
+        const thumbnailUrl = response.thumbnail.source
        
-        const result = { title, text, url };
-        
-        
+        const result = { title, text, url, thumbnailUrl };
+     
         return result;
     } catch (error) {
         console.error("Erro na busca Wikipedia:", error);
@@ -91,13 +91,17 @@ module.exports = {
                 })
                 return
             }
-            const { title, text, url } = page;
-
+            const { title, text, url, thumbnailUrl } = page;
+            
+            
             i.createMessage({
                 embeds: [{
                     title: title,
                     description: text,
-                    url: url
+                    url: url,
+                    thumbnail: {
+                        url: thumbnailUrl
+                    }
                 }]
             });
         } catch (error) {
