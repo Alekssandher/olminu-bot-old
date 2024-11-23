@@ -183,6 +183,7 @@ module.exports = {
                             url: char.url,
                             thumbnail: {
                                 url: char.images.jpg.image_url
+                                
                             },
                             fields: [
                                 {
