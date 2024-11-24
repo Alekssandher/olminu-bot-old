@@ -1,4 +1,8 @@
-import { CommandInteraction, Guild, User } from "eris";
+import { CommandInteraction, Guild, Member} from "eris";
+import dotenv from 'dotenv'
+dotenv.config()
+
+const CLIENT_ID: string = process.env.CLIENT_ID!
 
 module.exports = {
     name: 'server-information',
@@ -13,40 +17,78 @@ module.exports = {
       if (!i.member) {
         return i.createMessage("Could not retrieve member information.");
       }
-
+      
       const guild: Guild = i.channel.guild
+
+      const owner: Member | undefined = guild.members.find(user => user.id === guild.ownerID)
+
+      const createdAt: number = Math.floor(guild.createdAt / 1000)
       
-      const member: User = i.member.user
       
-      const createdAtDate: Date = new Date(guild.createdAt);
-      const createdAtFormatted: string = createdAtDate.toLocaleString();
+      const memberCount: number = guild.memberCount
       
+      const textChannelsCount: number = guild.channels.filter(channel => channel.type === 0).length;
+      const voiceChannelsCount: number = guild.channels.filter(channel => channel.type === 2).length
+      const channelsCount: number = textChannelsCount + voiceChannelsCount
+
+      const botMember = guild.members.get(CLIENT_ID) as Member
+
+      if (!botMember || !botMember.joinedAt) {
+        console.log('Bot member or joinedAt undefined', botMember)
+        return i.createMessage('Something really bad happened, please report')
+      }
+      
+
+      const botJoinedAt: number = Math.floor(botMember.joinedAt /1000)
+
+      console.log(guild)
       i.createMessage({
           embeds: [{
             
-            title: "Server Information", 
-            description: "Here is some more info, with **awesome** formatting.\nPretty *neat*, huh?",
-            author: { 
-              name: member.username,
-              icon_url: i.member.avatarURL,
+            title: guild.name,
+            thumbnail: {
+              url: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.jpg`
             },
-            color: 0x008000, 
+            color: 15395529, 
             fields: [ 
               {
-                name: "Server name", 
-                value: `${guild.name}`, 
+                name: "ID", 
+                value: `${guild.id}`, 
                 inline: true,
               },
               {
-                name: "This server was created at",
-                value: createdAtFormatted,
+                name: "Owner",
+                value: `\`\`@${owner?.username}\`\` (${guild.ownerID})`,
+                inline: true
+              },
+              {
+                name: "Created at",
+                value: `<t:${createdAt}:f> (<t:${createdAt}:R>)`,
                 inline: true,
               },
+              {
+                name: `Channels (${channelsCount})`,
+                value: `Text channels: ${textChannelsCount}\n Voice channels: ${voiceChannelsCount}`,
+                inline: true
+              },
+              {
+                name: 'Members',
+                value: `${memberCount}`,
+                inline: true
+              },
+              {
+                name: 'I joined at',
+                value: `<t:${botJoinedAt}:f> (<t:${botJoinedAt}:R>)`,
+                inline: true
+              }
             ],
-            footer: { 
-              text: "Just the footer.",
-            },
+            footer: {
+              text: i.member.user.globalName as string
+          },                    
+          timestamp: new Date().toISOString()
           }],
       })
+
+
     }
 }
