@@ -12,7 +12,11 @@ async function animeSearch(terms: string, i: CommandInteraction, username: strin
 
         const data: any = await response.json()
 
-        if (!data) return console.log(data); i.createMessage('Hell, the mal api is off')
+        if (!data) {
+            console.log(data)
+            i.createMessage('Hell, the mal api is off')
+            return
+        }
 
         return data.data[0]
 
