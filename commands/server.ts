@@ -1,13 +1,31 @@
-import { CommandInteraction, Guild, Member} from "eris";
+import { CommandInteraction, Guild, Member, User} from "eris";
 import dotenv from 'dotenv'
+
 dotenv.config()
 
 const CLIENT_ID: string = process.env.CLIENT_ID!
+const TOKEN: string = process.env.TOKEN!
+
+async function getUserInfo(userId: string) {
+  const response = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+    headers: {
+      Authorization: `Bot ${TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    console.error("Failed to fetch user:", response.statusText);
+    return;
+  }
+
+  const user: any = await response.json();
+  return user
+}
 
 module.exports = {
     name: 'server-information',
     description: 'show server information!',
-    execute: (i: CommandInteraction) => {
+    execute: async (i: CommandInteraction) => {
 
 
       if (!i.channel || !("guild" in i.channel)) {
@@ -20,10 +38,9 @@ module.exports = {
       
       const guild: Guild = i.channel.guild
 
-      const owner: Member | undefined = guild.members.find(user => user.id === guild.ownerID)
-
-      const createdAt: number = Math.floor(guild.createdAt / 1000)
+      const owner: User = await getUserInfo(guild.ownerID)
       
+      const createdAt: number = Math.floor(guild.createdAt / 1000)
       
       const memberCount: number = guild.memberCount
       
@@ -32,7 +49,7 @@ module.exports = {
       const channelsCount: number = textChannelsCount + voiceChannelsCount
 
       const botMember = guild.members.get(CLIENT_ID) as Member
-
+      
       if (!botMember || !botMember.joinedAt) {
         console.log('Bot member or joinedAt undefined', botMember)
         return i.createMessage('Something really bad happened, please report')
@@ -41,7 +58,6 @@ module.exports = {
 
       const botJoinedAt: number = Math.floor(botMember.joinedAt /1000)
 
-      console.log(guild)
       i.createMessage({
           embeds: [{
             
@@ -58,7 +74,7 @@ module.exports = {
               },
               {
                 name: "Owner",
-                value: `\`\`@${owner?.username}\`\` (${guild.ownerID})`,
+                value: `\`\`@${owner.username}\`\` (${guild.ownerID})`,
                 inline: true
               },
               {

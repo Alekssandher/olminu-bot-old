@@ -170,7 +170,7 @@ module.exports = {
             
             case 'character':
                 const char = await characterSearch(termsTreated, i, username)
-                console.log(char)
+                
                 if (!char || !char.name) return i.createMessage({
                     content: 'Not found, did you type it right?',
                     flags: 64

@@ -73,7 +73,6 @@ module.exports = {
             const searchTerm = i.data.options.find(opt => opt.name === 'termo') as InteractionDataOptionsString | undefined;
             if (!searchTerm) return
 
-            console.log(searchTerm, typeof(searchTerm))
             const langOp = i.data.options.find(opt => opt.name === 'language') as InteractionDataOptionsString | undefined
             
             let lang: string
@@ -81,7 +80,6 @@ module.exports = {
 
             if (!langOp){lang = "pt";} else {lang = langOp.value}
 
-            console.log("Lingua: ",lang);
             const page = await search(searchTerm.value, lang);
 
             if (!page){
