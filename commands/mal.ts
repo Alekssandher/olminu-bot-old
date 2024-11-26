@@ -4,7 +4,7 @@ import { CommandInteraction, InteractionDataOptions, InteractionDataOptionsStrin
 async function animeSearch(terms: string, i: CommandInteraction, username: string) {
     try {
         
-        const response = await fetch(`https://api.jikan.moe/v4/anime/?q=${terms}`)
+        const response = await fetch(`https://api.jikan.moe/v4/anime/?q=${terms}&limit=10`)
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -28,7 +28,7 @@ async function animeSearch(terms: string, i: CommandInteraction, username: strin
 
 async function characterSearch(terms: string, i: CommandInteraction, username: string) {
     try {
-        const response = await fetch(`https://api.jikan.moe/v4/characters/?q=${terms}`)
+        const response = await fetch(`https://api.jikan.moe/v4/characters/?q=${terms}&limit=10`)
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`)

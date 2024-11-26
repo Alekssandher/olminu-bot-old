@@ -35,8 +35,9 @@ const search = async (target: string, opLang: string) => {
             
         ]);
         const text = response.extract;
-        const thumbnailUrl = response.thumbnail.source
-       
+
+        const thumbnailUrl = response.thumbnail.source        
+
         const result = { title, text, url, thumbnailUrl };
      
         return result;
@@ -52,8 +53,8 @@ module.exports = {
     description: "Get information from Wikipedia",
     options: [
         {
-            name: "termo",
-            description: "sua pesquisa",
+            name: "term",
+            description: "your research",
             type: 3,
             required: true
         },
@@ -70,7 +71,7 @@ module.exports = {
             if (!i.data.options) return
 
             
-            const searchTerm = i.data.options.find(opt => opt.name === 'termo') as InteractionDataOptionsString | undefined;
+            const searchTerm = i.data.options.find(opt => opt.name === 'term') as InteractionDataOptionsString | undefined;
             if (!searchTerm) return
 
             const langOp = i.data.options.find(opt => opt.name === 'language') as InteractionDataOptionsString | undefined
@@ -84,7 +85,7 @@ module.exports = {
 
             if (!page){
                 i.createMessage({
-                    content: "Ops, parece que sua pesquisa não foi encontrada."
+                    content: "It looks like you research was not found"
                     
                 })
                 return
@@ -105,7 +106,7 @@ module.exports = {
         } catch (error) {
             console.error("Erro ao executar comando wiki:", error);
             i.createMessage({
-                content: "Ocorreu um erro ao buscar informações na Wikipedia. Por favor, tente novamente mais tarde."
+                content: "Hmm did you type it right? I couldn't find what you are looking for."
             });
         }
     }

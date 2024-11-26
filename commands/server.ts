@@ -3,6 +3,11 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+if (!process.env.TOKEN) {
+  throw new Error("A variável de ambiente TOKEN não está definida.");
+}
+
+
 const CLIENT_ID: string = process.env.CLIENT_ID!
 const TOKEN: string = process.env.TOKEN!
 

@@ -5,12 +5,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 if (!process.env.TOKEN) {
-    throw new Error("A variável de ambiente TOKEN não está definida.");
+    throw new Error("Ambient var (TOKEN) not defined.");
 }
 
 const { TOKEN } = process.env;
 
-const COOLDOWN_TIME: number = 6 * 1000;
+const COOLDOWN_TIME: number = 5 * 1000;
 
 
 const Cooldowns: Map<string, number> = new Map();
@@ -61,13 +61,13 @@ for (const file of commandFiles) {
     
     if (command.name) {
         bot.commands.set(command.name, command); 
-        console.log(`Comando carregado: ${command.name}`); 
+        console.log(`Command loaded: ${command.name}`); 
     } else {
-        console.error(`Erro: comando sem nome no arquivo ${file}`);
+        console.error(`Error: command with no name in the file ${file}`);
     }
 
     } catch (error) {
-        console.log(`Erro ao carregar comandos: ${error}`)
+        console.log(`Error loading commands: ${error}`)
     }
 }
 
@@ -77,7 +77,6 @@ bot.on("interactionCreate", (i: CommandInteraction) => {
     if (i.member == undefined){return console.log('i is undefined')}
     
     const userId: string = i.member.user.id ; 
-    console.log('type of userid: ', typeof(userId))
 
     if (Cooldowns.has(userId)) {
         
@@ -89,7 +88,7 @@ bot.on("interactionCreate", (i: CommandInteraction) => {
         if (timePassed < COOLDOWN_TIME) {
             const remainingTime = Math.ceil((COOLDOWN_TIME - timePassed) / 1000); 
             return i.createMessage({
-                content: `Por favor, aguarde ${remainingTime} segundos antes de usar o comando novamente.`
+                content: `Please, wait ${remainingTime} before using a command again.`
             });
         }
 
@@ -100,15 +99,15 @@ bot.on("interactionCreate", (i: CommandInteraction) => {
     
     console.time("COMMAND TIME")
     
-    console.log(`Interação criada com o nome: ${i.data.name}`); 
+    console.log(`Interaction name: ${i.data.name}`); 
     
     if (i instanceof CommandInteraction) {
         const command = bot.commands.get(i.data.name); 
-        console.log(`Comando encontrado:`, command.name); 
+        console.log(`Command found:`, command.name); 
         
         if (!command) {
             
-            i.createMessage("Este comando não existe.");
+            i.createMessage("This command does not exist.");
             return;
         }
 
@@ -116,8 +115,8 @@ bot.on("interactionCreate", (i: CommandInteraction) => {
             Cooldowns.set(userId, Date.now());
             command.execute(i); 
         } catch (error) {
-            console.error(`Erro ao executar o comando ${i.data.name}:`, error);
-            i.createMessage("Ocorreu um erro ao executar este comando!");
+            console.error(`Erros executing the command ${i.data.name}:`, error);
+            i.createMessage("There was an error while excecuting this command.");
         }
     }
     console.timeEnd("COMMAND TIME")
