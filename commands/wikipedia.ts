@@ -6,9 +6,6 @@ const search = async (target: string, opLang: string) => {
        
         let lang = ""
 
-        // if (cache.has(target)) {
-        //     return cache.get(target);
-        // }
         if(opLang){
             lang = opLang
         }
@@ -62,7 +59,17 @@ module.exports = {
             name: "language",
             description: "type a language like pt, en, rs",
             type: 3,
-            required: false
+            required: false,
+            choices: [
+                { name: '🇧🇷 Português', value: 'pt' },
+                { name: '🇺🇸 English', value: 'en' },
+                { name: '🇪🇸 Español', value: 'es' },
+                { name: '🇫🇷 Français', value: 'fr' },
+                { name: '🇮🇹 Italian', value: 'it' },
+                { name: '🇩🇪 Deutsch', value: 'de' },
+                { name: '🇯🇵 日本語', value: 'ja' },
+                { name: '🇨🇳 中文', value: 'zh' }
+            ]
         }
     ],
     execute: async (i: CommandInteraction) => {
@@ -104,7 +111,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            console.error("Erro ao executar comando wiki:", error);
+            console.error("Error executing command wiki:", error);
             i.createMessage({
                 content: "Hmm did you type it right? I couldn't find what you are looking for."
             });

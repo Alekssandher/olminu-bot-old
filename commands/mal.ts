@@ -1,10 +1,13 @@
 
 import { CommandInteraction, InteractionDataOptions, InteractionDataOptionsString, Member } from "eris"
 
-async function animeSearch(terms: string, i: CommandInteraction, username: string) {
+async function search(terms: string, i: CommandInteraction, username: string, op: boolean) {
     try {
         
-        const response = await fetch(`https://api.jikan.moe/v4/anime/?q=${terms}&limit=10`)
+        let response: Response
+        
+        if(op) response = await fetch(`https://api.jikan.moe/v4/anime/?q=${terms}&limit=10`)
+        else response = await fetch(`https://api.jikan.moe/v4/characters/?q=${terms}&limit=10`)
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -19,29 +22,6 @@ async function animeSearch(terms: string, i: CommandInteraction, username: strin
 
         return data.data[0]
 
-
-    } catch (error) {
-        console.error('Error looking for the data:', error)
-        i.createMessage(`I'm so sorry it happened ${username}, it's not your fault, it's me not you...`)
-    }
-}
-
-async function characterSearch(terms: string, i: CommandInteraction, username: string) {
-    try {
-        const response = await fetch(`https://api.jikan.moe/v4/characters/?q=${terms}&limit=10`)
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
-        }
-
-        const data: any = await response.json()
-
-        if (!data) {
-            console.log(data)
-            
-        }
-
-        return data.data[0]
 
     } catch (error) {
         console.error('Error looking for the data:', error)
@@ -98,7 +78,7 @@ module.exports = {
 
         switch (kind.value) {
             case 'anime':
-                const researchResult = await animeSearch(termsTreated, i, username)
+                const researchResult = await search(termsTreated, i, username, true)
 
                 if (!researchResult || !researchResult.title) return i.createMessage('Not found, did you type it right?')     
 
@@ -175,7 +155,7 @@ module.exports = {
                 break;
             
             case 'character':
-                const char = await characterSearch(termsTreated, i, username)
+                const char = await search(termsTreated, i, username, false)
                 
                 if (!char || !char.name) return i.createMessage({
                     content: 'Not found, did you type it right?',

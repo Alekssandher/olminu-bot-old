@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 if (!process.env.TOKEN) {
-    throw new Error("A variável de ambiente TOKEN não está definida.");
+    throw new Error("The env variable TOKEN is not defined.");
 }
 
 const { TOKEN } = process.env;
@@ -19,7 +19,7 @@ const client: Eris.Client = new Eris.Client(TOKEN, {
 });
 
 async function registerOrEditCommands(scope: string) {
-    console.log(`Carregando comandos para o escopo: ${scope}`);
+    console.log(`Loading commands for the scope: ${scope}`);
     const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.ts'));
     
     
@@ -32,7 +32,7 @@ async function registerOrEditCommands(scope: string) {
         const command = require(`./commands/${file}`);
 
         if (!command.name) {
-            console.error(`Comando sem nome encontrado no arquivo: ${file}`);
+            console.error(`Command with no name found: ${file}`);
             continue;
         }
 
@@ -57,7 +57,7 @@ async function registerOrEditCommands(scope: string) {
                     
                 });
             }
-            console.log(`Comando '${command.name}' atualizado no escopo ${scope}.`);
+            console.log(`Command '${command.name}' updated in scope ${scope}.`);
         } else {
            
             if (scope === "guild") {
@@ -75,10 +75,10 @@ async function registerOrEditCommands(scope: string) {
                     type: Constants.ApplicationCommandTypes.CHAT_INPUT
                 });
             }
-            console.log(`Comando '${command.name}' registrado no escopo ${scope}.`);
+            console.log(`Command '${command.name}' registred in scope ${scope}.`);
         }
     }
-    console.log(`Todos os comandos foram carregados e atualizados no escopo ${scope}!`);
+    console.log(`All commands were updated in the scope ${scope}!`);
 }
 
 
@@ -86,13 +86,13 @@ async function main() {
     const scope = process.argv[2]; 
 
     if (!["guild", "global"].includes(scope)) {
-        console.error("Por favor, especifique o escopo como 'guild' ou 'global'.");
+        console.error("Please, type the scope like 'guild' or 'global'.");
         process.exit(1);
     }
 
     await client.connect();
     client.on("ready", async () => {
-        console.log(`Bot conectado como ${client.user.username}`);
+        console.log(`Bot connected as ${client.user.username}`);
         await registerOrEditCommands(scope);
         client.disconnect({reconnect: false});
     });
