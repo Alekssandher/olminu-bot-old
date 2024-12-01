@@ -23,7 +23,6 @@ const search = async (target: string, opLang: string) => {
 
         const firstResultTitle = searchResults.results[0].title;
         const page = await wiki.page(firstResultTitle);
-
         
         const [title, response, url] = await Promise.all([
             page.title,
@@ -32,8 +31,8 @@ const search = async (target: string, opLang: string) => {
             
         ]);
         const text = response.extract;
-
-        const thumbnailUrl = response.thumbnail.source        
+        
+        const thumbnailUrl = response.thumbnail?.source || '';        
 
         const result = { title, text, url, thumbnailUrl };
      
@@ -89,7 +88,7 @@ module.exports = {
             if (!langOp){lang = "pt";} else {lang = langOp.value}
 
             const page = await search(searchTerm.value, lang);
-
+            
             if (!page){
                 i.createMessage({
                     content: "It looks like you research was not found"
