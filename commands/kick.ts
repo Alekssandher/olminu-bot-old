@@ -46,7 +46,7 @@ async function getGuildUser(guildId: string, username: string) {
     return data
 }
 
-async function kick(guildId: string, userId: string, i: CommandInteraction, reason?: string) {
+async function kick(guildId: string, userId: string, i: CommandInteraction, user: string, reason?: string) {
     const url = `https://discord.com/api/guilds/${guildId}/members/${userId}`;
     const headers = {
         Authorization: `Bot ${TOKEN}`,
@@ -64,6 +64,12 @@ async function kick(guildId: string, userId: string, i: CommandInteraction, reas
         return i.createMessage({
             content: `How am i supposed to kick this user if i don't have enough permissions?`,
             flags: 64
+        })
+    } else {
+        return i.createMessage({
+            content: `The user ${user} was kicked >:)`,
+            flags: 64
+            
         })
     }
 
@@ -90,16 +96,20 @@ module.exports = {
     ],
     execute: async (i: CommandInteraction) => {
 
-        await i.acknowledge
-
         if (!i.data.options || !i.channel) return
         if (!i.channel || !("guild" in i.channel)) {
             return i.createMessage("This command can only be used in a server channel.");
         }
 
         const searchTerm = (i.data.options.find(opt => opt.name === 'user') as InteractionDataOptionsString ).value
-        const kickMessage = (i.data.options.find(opt => opt.name === 'reason') as InteractionDataOptionsString || undefined) 
+        const reason = (i.data.options.find(opt => opt.name === 'reason') as InteractionDataOptionsString || undefined)
+        let kickMessage
 
+        if(!reason) kickMessage = '' 
+        else kickMessage = reason.value
+        
+
+        
         const guild: Guild = i.channel.guild
         const guildId: string = guild.id
         
@@ -115,13 +125,9 @@ module.exports = {
         })
 
         console.log('id do membro',memberId)
-        await kick(guildId, memberId, i, kickMessage.value)
+        await kick(guildId, memberId, i, searchTerm, kickMessage)
 
-        return i.createMessage({
-            content: `The user ${searchTerm} was kicked >:)`,
-            flags: 64
-            
-        })
+        
     }
   
 }
