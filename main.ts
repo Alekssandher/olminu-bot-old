@@ -16,15 +16,17 @@ const COOLDOWN_TIME: number = 5 * 1000;
 const Cooldowns: Map<string, number> = new Map();
 
 
-const bot: any = new Eris.Client(TOKEN, {
+export const bot: any = new Eris.Client(TOKEN, {
     intents: [
         Eris.Constants.Intents.guildMessages,
         Eris.Constants.Intents.guilds,
+        Eris.Constants.Intents.guildMembers
     ],
     rest: {
         requestTimeout: 60000
     }
 });
+
 
 
 
