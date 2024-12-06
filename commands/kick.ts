@@ -66,6 +66,7 @@ async function kick(guildId: string, userId: string, i: CommandInteraction, user
             flags: 64
         })
     } else {
+        console.log(`User ${userId} kicked successfully.`);
         return i.createMessage({
             content: `The user ${user} was kicked >:)`,
             flags: 64
@@ -73,7 +74,7 @@ async function kick(guildId: string, userId: string, i: CommandInteraction, user
         })
     }
 
-    console.log(`User ${userId} kicked successfully.`);
+    
 }
 
 module.exports = {
@@ -101,6 +102,15 @@ module.exports = {
             return i.createMessage("This command can only be used in a server channel.");
         }
 
+        const member = i.member as Member
+
+        console.log('permissions: ',member.permissions)
+        if (!member || !(member.permissions.has("administrator"))) {
+            return i.createMessage({
+                content: "You do not have the necessary permissions to use this command."
+            });
+        }
+        
         const searchTerm = (i.data.options.find(opt => opt.name === 'user') as InteractionDataOptionsString ).value
         const reason = (i.data.options.find(opt => opt.name === 'reason') as InteractionDataOptionsString || undefined)
         let kickMessage
@@ -124,7 +134,7 @@ module.exports = {
             flags: 64
         })
 
-        console.log('id do membro',memberId)
+        
         await kick(guildId, memberId, i, searchTerm, kickMessage)
 
         
