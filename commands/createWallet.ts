@@ -1,6 +1,6 @@
 
 import { CommandInteraction } from 'eris';
-const gerarCarteira = require('../scripts/createWallet')
+const gerarCarteira = require('../utils/createWallet')
 
 interface Wallet {
     address: string;

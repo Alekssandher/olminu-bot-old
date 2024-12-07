@@ -95,6 +95,8 @@ module.exports = {
             required: false
         }
     ],
+    default_member_permissions: 'KICK_MEMBERS',
+    
     execute: async (i: CommandInteraction) => {
 
         if (!i.data.options || !i.channel) return

@@ -20,7 +20,7 @@ const client: Eris.Client = new Eris.Client(TOKEN, {
 
 async function registerOrEditCommands(scope: string) {
     console.log(`Loading commands for the scope: ${scope}`);
-    const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.ts'));
+    const commandFiles = fs.readdirSync('utils/../commands').filter(file => file.endsWith('.ts'));
     
     
     const registeredCommands = scope === "guild"
@@ -29,7 +29,7 @@ async function registerOrEditCommands(scope: string) {
     
     
     for (const file of commandFiles) {
-        const command = require(`./commands/${file}`);
+        const command = require(`../commands/${file}`);
 
         if (!command.name) {
             console.error(`Command with no name found: ${file}`);
