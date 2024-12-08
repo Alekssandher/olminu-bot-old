@@ -1,50 +1,14 @@
-import { Button, Client, Command, CommandInteraction, Guild, Interaction, InteractionDataOptionsString, Member, MessageInteraction } from "eris";
+import { CommandInteraction, Guild, InteractionDataOptionsString, Member } from "eris";
 import dotenv from 'dotenv'
-import { bot } from '../main'
+import { searchUserInGuild } from '../utils/searchUserInGuild'
 
 dotenv.config()
 
 if (!process.env.TOKEN) {
-  throw new Error("A variável de ambiente TOKEN não está definida.");
+  throw new Error("Ambient variable TOKEN is not defined");
 }
 
-
-const CLIENT_ID: string = process.env.CLIENT_ID!
 const TOKEN: string = process.env.TOKEN!
-
-async function getGuildUser(guildId: string, username: string) {
-    const urlByName: string = `https://discord.com/api/guilds/${guildId}/members/search?query=${username}&limit=1`
-    
-
-    const headers = {
-        Authorization: `Bot ${TOKEN}`
-    }
-
-
-    const response: Response = await fetch(urlByName, { headers })
-
-    if (!response.ok) {
-        console.error("Failed to fetch user:", response.statusText);
-        return;
-    }
-
-    const data: any = await response.json()
-
-    if (Array.isArray(data) && data.length === 0){
-        const urlById: string = `https://discord.com/api/guilds/${guildId}/members/${username.replace(/[@<>]/g, '')}`
-
-        console.log('data is empty trying other')
-
-        const fallBackResponse = await fetch(urlById, {headers})
-        
-        const fallbackData = await fallBackResponse.json()
-        
-        return fallbackData
-    }  
-
-    
-    return data
-}
 
 async function kick(guildId: string, userId: string, i: CommandInteraction, user: string, reason?: string) {
     const url = `https://discord.com/api/guilds/${guildId}/members/${userId}`;
@@ -106,7 +70,6 @@ module.exports = {
 
         const member = i.member as Member
 
-        console.log('permissions: ',member.permissions)
         if (!member || !(member.permissions.has("administrator"))) {
             return i.createMessage({
                 content: "You do not have the necessary permissions to use this command."
@@ -125,7 +88,7 @@ module.exports = {
         const guild: Guild = i.channel.guild
         const guildId: string = guild.id
         
-        const user: Array<Member> | Member = await getGuildUser(guild.id, searchTerm)
+        const user: Array<Member> | Member = await searchUserInGuild(guild.id, searchTerm, TOKEN)
 
         let memberId: string = ''
         
