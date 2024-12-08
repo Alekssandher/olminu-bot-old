@@ -32,7 +32,7 @@ export const bot: any = new Eris.Client(TOKEN, {
 
 bot.on("debug", (info: any) => {
     console.log("Debug:", info);
-  });
+});
 
 bot.on("error", (err: Error) => {
 

@@ -1,4 +1,4 @@
-import { CommandInteraction, InteractionDataOptionsNumber, InteractionDataOptionsString, Message } from "eris";
+import { CommandInteraction, InteractionDataOptionsNumber, InteractionDataOptionsString, Message, TextChannel } from "eris";
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -31,6 +31,10 @@ module.exports = {
 
         if (!i.data.options) return
 
+        if (!i.channel || !("guild" in i.channel)) {
+            return i.createMessage("This command can only be used in a server channel.");
+        }
+        
         let number = (i.data.options.find(opt => opt.name === 'number') as InteractionDataOptionsNumber ).value
 
         
@@ -41,16 +45,28 @@ module.exports = {
 
         const chat = (i.data.options.find(opt => opt.name === 'chat') as InteractionDataOptionsString || undefined)
 
+        console.log("chat: ", chat)
         const chatId = chat
-        ?chat
+        ?chat.value
         :i.channel.id
         
+        const channels = i.channel.guild.channels
+
+        const channel = channels.find(ch => ch.id === chatId && (ch.type === 0 || ch.type === 5));
+
+        console.log("channel: ", channel)
+
+        if(!channel) return i.createMessage(`I couldn't find this chat ${chatId} - did you type it right?`)
 
         let messages: Message[] = []
         let numberOfMessages: Number = 0
 
+        if (!channel || !(channel instanceof TextChannel)) {
+            return i.createMessage(`I couldn't find a valid chat with ID ${chatId} or it is not a text channel.`);
+        }
+
         if(number <= 100) {
-            const fetchedMessages = await i.channel.getMessages({
+            const fetchedMessages = await channel.getMessages({
                 limit: number
             })
             
@@ -58,7 +74,6 @@ module.exports = {
 
             messages = messages.concat(fetchedMessages);
 
-            console.log(messages)
 
             if(messages.length == 0) return i.createMessage("There are no messages to delete")
 

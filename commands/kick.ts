@@ -63,6 +63,7 @@ module.exports = {
     
     execute: async (i: CommandInteraction) => {
 
+       
         if (!i.data.options || !i.channel) return
         if (!i.channel || !("guild" in i.channel)) {
             return i.createMessage("This command can only be used in a server channel.");
