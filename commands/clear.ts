@@ -31,6 +31,10 @@ async function deleteMessages(number: number, chatId: string, i: CommandInteract
             body: JSON.stringify({ messages: messagesIDs })
         });
 
+        console.log("resposta",response)
+
+        if (response.status == 403) return i.createMessage("It looks like i don't have enough permissions to clear messages >:(")
+
         if (!response.ok) return i.createMessage({
             
             content: "Internal error, oh hell!",
@@ -69,14 +73,10 @@ module.exports = {
             return i.createMessage("This command can only be used in a server channel.");
         }
         
-        const guild = i.channel.guild
-
         let number = (i.data.options.find(opt => opt.name === 'number') as InteractionDataOptionsNumber ).value
-
-        
-
+     
         if(number > 100){
-            return i.createMessage("Unfortunately I can just delete 100 messages once >:(")
+            return i.createMessage("Unfortunately I can just delete 100 messages at a time >:(")
         }
 
         const chat = (i.data.options.find(opt => opt.name === 'chat') as InteractionDataOptionsString || undefined)

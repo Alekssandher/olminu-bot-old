@@ -37,16 +37,20 @@ bot.on("debug", (info: any) => {
 
 bot.on("error", (err: Error) => {
 
-    console.error("Client error (bot.on)", err); 
-
-});
+    console.error("Client error (bot.on)", err)
+})
 
 bot.on("ready", () => { 
-    console.log("Ready!");
     
-});
+    console.log(`Bot connected as ${bot.user.username}`)
+
+    console.log("Ready!")
+    
+})
 
 bot.connect(); 
+
+
 
 bot.options.disableEvents = {
     TYPING_START: true,  
