@@ -7,7 +7,70 @@ if (!process.env.TOKEN) {
 }
 
 const TOKEN: string = process.env.TOKEN!
+async function deleteMessages(number: number, channel: any, chatId: string, i: CommandInteraction) {
+    let messages: Message[] = []
+        let numberOfMessages: number = 0
 
+        if (!channel || !(channel instanceof TextChannel)) {
+            return i.createMessage(`I couldn't find a valid chat with ID ${chatId} or it is not a text channel.`);
+        }
+        const fetchedMessages = await channel.getMessages({
+            limit: number
+        })
+        numberOfMessages = fetchedMessages.length
+
+        const messageIds = fetchedMessages
+            .filter(msg => (Date.now() - new Date(msg.timestamp).getTime()) / 1000 / 60 / 60 / 24 < 14) 
+            .map(msg => msg.id);
+
+        messages = messages.concat(fetchedMessages);
+
+        const url = `https://discord.com/api/channels/${chatId}/messages/bulk-delete`;
+
+        const headers = {
+            Authorization: `Bot ${TOKEN}`,
+            "Content-Type": "application/json"
+        };
+
+        const response = await fetch(url, {
+            method: "POST", 
+            headers,
+            body: JSON.stringify({ messages: messageIds })
+        });
+
+        if (response.status != 204) return i.createMessage({
+            content: "Internal error, oh hell!",
+            flags: 64
+        })
+        else {
+            return i.createMessage(`${number} messages deleted in this chat: ${chatId}`)
+        }
+        
+        //Old way to delete messages
+        // if(number <= 100) {
+        //     const fetchedMessages = await channel.getMessages({
+        //         limit: number
+        //     })
+            
+        //     numberOfMessages = fetchedMessages.length
+
+        //     messages = messages.concat(fetchedMessages);
+
+
+        //     if(messages.length == 0) return i.createMessage("There are no messages to delete")
+
+        //     if(messages.length < number ) number = messages.length 
+
+        //     console.log("Counts: ", messages.length, number)
+
+        //     messages.slice(0, number).forEach(async message => {
+                
+        //         await message.delete();
+        //     });
+
+        //     return i.createMessage(`${number} messages deleted in this chat: ${chatId}`)
+        // }
+}
 module.exports = {
     name: "clear",
     description: "Clear chat messages",
@@ -58,36 +121,7 @@ module.exports = {
 
         if(!channel) return i.createMessage(`I couldn't find this chat ${chatId} - did you type it right?`)
 
-        let messages: Message[] = []
-        let numberOfMessages: Number = 0
-
-        if (!channel || !(channel instanceof TextChannel)) {
-            return i.createMessage(`I couldn't find a valid chat with ID ${chatId} or it is not a text channel.`);
-        }
-
-        if(number <= 100) {
-            const fetchedMessages = await channel.getMessages({
-                limit: number
-            })
-            
-            numberOfMessages = fetchedMessages.length
-
-            messages = messages.concat(fetchedMessages);
-
-
-            if(messages.length == 0) return i.createMessage("There are no messages to delete")
-
-            if(messages.length < number ) number = messages.length 
-
-            console.log("Counts: ", messages.length, number)
-
-            messages.slice(0, number).forEach(message => {
-                
-                message.delete();
-            });
-
-            return i.createMessage(`${number} messages deleted in this chat: ${chatId}`)
-        }
+        await deleteMessages(number, channel, chatId, i)
 
     }
     

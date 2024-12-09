@@ -20,7 +20,8 @@ export const bot: any = new Eris.Client(TOKEN, {
     intents: [
         Eris.Constants.Intents.guildMessages,
         Eris.Constants.Intents.guilds,
-        Eris.Constants.Intents.guildMembers
+        Eris.Constants.Intents.guildMembers,
+        Eris.Constants.Intents.messageContent
     ],
     rest: {
         requestTimeout: 60000
