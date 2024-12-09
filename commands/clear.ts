@@ -74,7 +74,9 @@ module.exports = {
         }
         
         let number = (i.data.options.find(opt => opt.name === 'number') as InteractionDataOptionsNumber ).value
-     
+        
+        if (number == 1) return i.createMessage("If you just want to delete 1 message, why are you using this command?")
+            
         if(number > 100){
             return i.createMessage("Unfortunately I can just delete 100 messages at a time >:(")
         }
