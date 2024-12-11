@@ -30,7 +30,7 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 - [License](#license)
 
 ## Inviting Bot
-Invite the bot to your server using this [link](https://discord.com/oauth2/authorize?client_id=1303531869878358036).
+You can add Olminu to your Discord server by following this [link](https://discord.com/oauth2/authorize?client_id=1303531869878358036) and inviting her.
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/) (version 20.18 or higher)
@@ -74,11 +74,11 @@ Commands can be registered globally or restricted to a specific guild.
 
 ```
 // To register guild commands
-ts-node register-commands.ts guild
+ts-node utils/register-commands.ts guild
 ```
 ```
 // To register global commands
-ts-node register-commands.ts global
+ts-node utils/register-commands.ts global
 ```
 > Note: Global command registration might take up to an hour to propagate across all servers. Guild commands are updated instantly.
 ## Contribution
