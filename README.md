@@ -53,11 +53,12 @@ You can add Olminu to your Discord server by following this [link](https://disco
 ## Setting Up
 
 1. Log in to the [Discord Developer Portal](https://discord.com/developers) and create a new application.
-2. Create a `.env` file in the root folder.
+> **Note**: Make sure to configure it properly.
+3. Create a `.env` file in the root folder.
     - Check the `.env.example` file for the required variables.
-3. Replace the placeholder values with your bot's credentials.
+4. Replace the placeholder values with your bot's credentials.
 
-> **Tip**: For testing, create a dedicated Discord server. Use the `GUILD_ID` environment variable to restrict commands to that server.
+> **Note**: For testing, create a dedicated Discord server. Use the `GUILD_ID` environment variable to restrict commands to that server.
 
 ## Running the Project
 
