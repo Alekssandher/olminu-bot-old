@@ -86,7 +86,7 @@ ts-node utils/register-commands.ts global
 If you want to contribute to the project, feel free to open an issue or submit a pull request. All contributions are welcome!
 
 ## Terms
-Make sure to be a good guy and follow or [terms of use](TERMS.md)
+Make sure to be a good guy and follow or [terms of use](TERMS.md) when using our bot in your Discord server.
 ## License
 This project is licensed under the GNU General Public License (GPL) version 3. You are free to use, modify, and distribute this software, provided that all copies and derivatives are also licensed under GPL v3.
 
