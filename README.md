@@ -1,7 +1,8 @@
 <div align="center">
     
 # Olminu Bot  
-<img src="https://i.imgur.com/xKP55zy.gif" >
+![olminu](https://github.com/user-attachments/assets/8f32c400-78f9-4a52-b657-65e6e6b87cbf)
+
 
 **Olminu Bot** is a Discord bot developed using Eris.js.
 
