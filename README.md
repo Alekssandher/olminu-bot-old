@@ -1,3 +1,7 @@
+> ⚠ **Warning:** This repository is no longer maintained.  
+> Please check out the new version of Olminu Bot at:  
+> [https://github.com/Alekssandher/olminu-bot/](https://github.com/Alekssandher/olminu-bot/)
+
 <div align="center">
     
 # Olminu Bot  
